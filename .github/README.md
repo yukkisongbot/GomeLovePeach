@@ -6,8 +6,6 @@
   <img src="https://telegra.ph/file/8cf52c7fc95d8f58d7926.jpg">
 </p>
 
-" /></a>
-</p>
 
 <p align="center">
   <img src="https://telegra.ph/file/0b25aa6c39c494091c272.jpg">
