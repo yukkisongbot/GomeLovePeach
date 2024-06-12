@@ -1,100 +1,57 @@
 import math
 
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from pyrogram.types import InlineKeyboardButton
 
-import config
 from AnonXMusic.utils.formatters import time_to_seconds
 
 
-## After Edits with Timer Bar
-
-def stream_markup_timer(_, videoid, chat_id, played, dur):
-    played_sec = time_to_seconds(played)
-    duration_sec = time_to_seconds(dur)
-    percentage = (played_sec / duration_sec) * 100
-    anon = math.floor(percentage)
-    
-    if 0 < anon <= 10:
-        bar = "᠂ ⃪ᠰ⋆𓆩𔘓⃭𓆪࿁୫ ‌Ƴʋ‌ᩘɤɩ‌ ‌᪳ʋ‌ᩘʀɪ ‌୫࿁ᠰ⃪᠂"
-    elif 10 < anon < 20:
-        bar = "᠂ ⃪ᠰ⋆࿁୫ ‌𓆩𔘓⃭𓆪Ƴʋ‌ᩘɤɩ‌ ‌᪳ʋ‌ᩘʀɪ ‌୫࿁ᠰ⃪᠂"
-    elif 20 <= anon < 30:
-        bar = "᠂ ⃪ᠰ⋆࿁୫ ‌Ƴ𓆩𔘓⃭𓆪ʋ‌ᩘɤɩ‌ ‌᪳ʋ‌ᩘʀɪ ‌୫࿁ᠰ⃪᠂"
-    elif 30 <= anon < 40:
-        bar = "᠂ ⃪ᠰ⋆࿁୫ ‌Ƴʋ‌ᩘ𓆩𔘓⃭𓆪ɤɩ‌ ‌᪳ʋ‌ᩘʀɪ ‌୫࿁ᠰ⃪᠂"
-    elif 40 <= anon < 50:
-        bar = "᠂ ⃪ᠰ⋆࿁୫ ‌Ƴʋ‌ᩘɤɩ‌𓆩𔘓⃭𓆪 ‌᪳ʋ‌ᩘʀɪ ‌୫࿁ᠰ⃪᠂"
-    elif 50 <= anon < 60:
-        bar = "᠂ ⃪ᠰ⋆࿁୫ ‌Ƴʋ‌ᩘɤɩ‌ ‌᪳ʋ‌ᩘʀ𓆩𔘓⃭𓆪ɪ ‌୫࿁ᠰ⃪᠂"
-    elif 60 <= anon < 70:
-        bar = "᠂ ⃪ᠰ⋆࿁୫ ‌Ƴʋ‌ᩘɤɩ‌ ‌᪳ʋ‌ᩘʀɪ ‌𓆩𔘓⃭𓆪୫࿁ᠰ⃪᠂"
-    elif 70 <= anon < 80:
-        bar = "᠂ ⃪ᠰ⋆࿁୫ ‌Ƴʋ‌ᩘɤɩ‌ ‌᪳ʋ‌ᩘʀɪ ‌𓆩𔘓⃭𓆪୫࿁ᠰ⃪᠂"
-    elif 80 <= anon < 95:
-        bar = "᠂ ⃪ᠰ⋆࿁୫ ‌Ƴʋ‌ᩘɤɩ‌ ‌᪳ʋ‌ᩘʀɪ ‌୫࿁𓆩𔘓⃭𓆪ᠰ⃪᠂"
-    else:
-        bar = "᠂ ⃪ᠰ⋆࿁୫ ‌Ƴʋ‌ᩘɤɩ‌ ‌᪳ʋ‌ᩘʀɪ ‌୫࿁ᠰ⃪᠂𓆩𔘓⃭𓆪"
-
+def track_markup(_, videoid, user_id, channel, fplay):
     buttons = [
         [
             InlineKeyboardButton(
-                text=f"{played} {bar} {dur}",
-                callback_data="GetTimer",
-            )
-        ],
-        [
-            InlineKeyboardButton(
-                text="▷",
-                callback_data=f"ADMIN Resume|{chat_id}",
+                text=_["P_B_1"],
+                callback_data=f"MusicStream {videoid}|{user_id}|a|{channel}|{fplay}",
             ),
             InlineKeyboardButton(
-                text="◧", callback_data=f"ADMIN Pause|{chat_id}"
-            ),
-            InlineKeyboardButton(
-                text="★", callback_data=f"add_playlist {videoid}"
-            ),
-            InlineKeyboardButton(
-                text="‣‣I", callback_data=f"ADMIN Skip|{chat_id}"
-            ),
-            InlineKeyboardButton(
-                text="▣", callback_data=f"ADMIN Stop|{chat_id}"
+                text=_["P_B_2"],
+                callback_data=f"MusicStream {videoid}|{user_id}|v|{channel}|{fplay}",
             ),
         ],
         [
             InlineKeyboardButton(
-                text="◯ ᴄʟᴏsᴇ ◯", callback_data=f"close"
+                text=_["CLOSE_BUTTON"],
+                callback_data=f"forceclose {videoid}|{user_id}",
             )
         ],
     ]
     return buttons
 
 
-def telegram_markup_timer(_, chat_id, played, dur):
+def stream_markup_timer(_, chat_id, played, dur):
     played_sec = time_to_seconds(played)
     duration_sec = time_to_seconds(dur)
     percentage = (played_sec / duration_sec) * 100
-    anon = math.floor(percentage)
-    if 0 < anon <= 10:
+    umm = math.floor(percentage)
+    if 0 < umm <= 10:
         bar = "᠂ ⃪ᠰ⋆𓆩𔘓⃭𓆪࿁୫ ‌Ƴʋ‌ᩘɤɩ‌ ‌᪳ʋ‌ᩘʀɪ ‌୫࿁ᠰ⃪᠂"
-    elif 10 < anon < 20:
+    elif 10 < umm < 20:
         bar = "᠂ ⃪ᠰ⋆࿁୫ ‌𓆩𔘓⃭𓆪Ƴʋ‌ᩘɤɩ‌ ‌᪳ʋ‌ᩘʀɪ ‌୫࿁ᠰ⃪᠂"
-    elif 20 <= anon < 30:
+    elif 20 <= umm < 30:
         bar = "᠂ ⃪ᠰ⋆࿁୫ ‌Ƴ𓆩𔘓⃭𓆪ʋ‌ᩘɤɩ‌ ‌᪳ʋ‌ᩘʀɪ ‌୫࿁ᠰ⃪᠂"
-    elif 30 <= anon < 40:
+    elif 30 <= umm < 40:
         bar = "᠂ ⃪ᠰ⋆࿁୫ ‌Ƴʋ‌ᩘ𓆩𔘓⃭𓆪ɤɩ‌ ‌᪳ʋ‌ᩘʀɪ ‌୫࿁ᠰ⃪᠂"
-    elif 40 <= anon < 50:
+    elif 40 <= umm < 50:
         bar = "᠂ ⃪ᠰ⋆࿁୫ ‌Ƴʋ‌ᩘɤɩ‌𓆩𔘓⃭𓆪 ‌᪳ʋ‌ᩘʀɪ ‌୫࿁ᠰ⃪᠂"
-    elif 50 <= anon < 60:
+    elif 50 <= umm < 60:
+        bar = "᠂ ⃪ᠰ⋆࿁୫ ‌Ƴʋ‌ᩘɤɩ‌ ‌᪳ʋ‌ᩘ𓆩𔘓⃭𓆪ʀɪ ‌୫࿁ᠰ⃪᠂"
+    elif 60 <= umm < 70:
         bar = "᠂ ⃪ᠰ⋆࿁୫ ‌Ƴʋ‌ᩘɤɩ‌ ‌᪳ʋ‌ᩘʀ𓆩𔘓⃭𓆪ɪ ‌୫࿁ᠰ⃪᠂"
-    elif 60 <= anon < 70:
+    elif 70 <= umm < 80:
         bar = "᠂ ⃪ᠰ⋆࿁୫ ‌Ƴʋ‌ᩘɤɩ‌ ‌᪳ʋ‌ᩘʀɪ ‌𓆩𔘓⃭𓆪୫࿁ᠰ⃪᠂"
-    elif 70 <= anon < 80:
-        bar = "᠂ ⃪ᠰ⋆࿁୫ ‌Ƴʋ‌ᩘɤɩ‌ ‌᪳ʋ‌ᩘʀɪ ‌𓆩𔘓⃭𓆪୫࿁ᠰ⃪᠂"
-    elif 80 <= anon < 95:
+    elif 80 <= umm < 95:
         bar = "᠂ ⃪ᠰ⋆࿁୫ ‌Ƴʋ‌ᩘɤɩ‌ ‌᪳ʋ‌ᩘʀɪ ‌୫࿁𓆩𔘓⃭𓆪ᠰ⃪᠂"
     else:
         bar = "᠂ ⃪ᠰ⋆࿁୫ ‌Ƴʋ‌ᩘɤɩ‌ ‌᪳ʋ‌ᩘʀɪ ‌୫࿁ᠰ⃪᠂𓆩𔘓⃭𓆪"
-
     buttons = [
         [
             InlineKeyboardButton(text="▷", callback_data=f"ADMIN Resume|{chat_id}"),
